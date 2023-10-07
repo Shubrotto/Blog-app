@@ -8,10 +8,7 @@ router.post("/", async (req, res) => {
     const newPost = new Post(req.body);
     console.log(newPost);
     const savePost = await newPost.save();
-    res.status(200).json({
-      success: true,
-      savePost,
-    });
+    res.status(200).json(savePost);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -51,12 +48,8 @@ router.delete("/:id", async (req, res) => {
     const post = await Post.findById(req.params.id);
     if (post.username === req.body.username) {
       try {
-        const deleteUser = await post.deleteOne();
-        console.log(deleteUser);
-        res.status(200).json({
-          message: "Post has been deleted...",
-          deleteUser,
-        });
+        await post.deleteOne();
+        res.status(200).json("Post has been deleted...");
       } catch (error) {
         res.status(500).json(error.message);
       }
@@ -72,9 +65,7 @@ router.delete("/:id", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    res.status(200).json({
-      post,
-    });
+    res.status(200).json(post);
   } catch (error) {
     res.status(500).json({
       success: false,
