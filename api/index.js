@@ -1,9 +1,10 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
 const mongoose = require("mongoose");
-const PORT = process.env.PORT | "http://localhost:5000";
+const PORT = process.env.PORT | "http://localhost:6000";
 const MONGO_URL = process.env.MONGO_URL;
 // router
 const authRoute = require("./routes/auth");
@@ -12,9 +13,12 @@ const postRoute = require("./routes/postRoute");
 const categoryRoute = require("./routes/categoriesRoute");
 
 const multer = require("multer");
+const path = require("path");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
+app.use("/images", express.static(path.join(__dirname, "/images")));
 
 mongoose
   .connect(MONGO_URL, {
